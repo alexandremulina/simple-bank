@@ -2,14 +2,22 @@ package main
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
 	"log"
 	"masterclass/api"
 	db "masterclass/db/sqlc"
+
+	"masterclass/util"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	conn, err := sql.Open("postgres", "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable")
+	config, err := util.LoadConfig(".")
+	if err != nil {
+		log.Fatal("cannot load config: ", err)
+	}
+
+	conn, err := sql.Open(config.DBDriver, config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db: ", err)
 	}

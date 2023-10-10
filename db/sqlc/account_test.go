@@ -84,7 +84,7 @@ func TestListAccounts(t *testing.T) {
 	}
 
 	params := ListAccountsParams{
-		// Owner:  lastAccount.Owner,
+		Owner:  lastAccount.Owner,
 		Limit:  5,
 		Offset: 0,
 	}
