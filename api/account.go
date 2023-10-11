@@ -72,13 +72,6 @@ type listAccountRequest struct {
 
 // your code here
 
-type Account struct {
-	ID       int64  `json:"id"`
-	Owner    string `json:"owner"`
-	Balance  int64  `json:"balance"`
-	Currency string `json:"currency"`
-}
-
 func (server *Server) listAccounts(ctx *gin.Context) {
 	var req listAccountRequest
 	if err := ctx.ShouldBindQuery(&req); err != nil {
@@ -87,22 +80,48 @@ func (server *Server) listAccounts(ctx *gin.Context) {
 	}
 
 	arg := db.ListAccountsParams{
-		// Owner:  "", // Replace with the owner you want to query
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
-
 	accounts, err := server.store.ListAccounts(ctx, arg)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return
-	}
-
-	// Check if any accounts were retrieved
-	if len(accounts) == 0 {
-		ctx.JSON(http.StatusOK, []Account{}) // Return an empty slice
-		return
 	}
 
 	ctx.JSON(http.StatusOK, accounts)
 }
+
+// type Account struct {
+// 	ID       int64  `json:"id"`
+// 	Owner    string `json:"owner"`
+// 	Balance  int64  `json:"balance"`
+// 	Currency string `json:"currency"`
+// }
+
+// func (server *Server) listAccounts(ctx *gin.Context) {
+// 	var req listAccountRequest
+// 	if err := ctx.ShouldBindQuery(&req); err != nil {
+// 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+// 		return
+// 	}
+
+// 	arg := db.ListAccountsParams{
+// 		Owner:  "Alexandre Mulina", // Replace with the owner you want to query
+// 		Limit:  req.PageSize,
+// 		Offset: (req.PageID - 1) * req.PageSize,
+// 	}
+
+// 	accounts, err := server.store.ListAccounts(ctx, arg)
+// 	if err != nil {
+// 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+// 		return
+// 	}
+
+// 	// Check if any accounts were retrieved
+// 	if len(accounts) == 0 {
+// 		ctx.JSON(http.StatusOK, []Account{}) // Return an empty slice
+// 		return
+// 	}
+
+// 	ctx.JSON(http.StatusOK, accounts)
+// }
