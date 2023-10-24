@@ -54,14 +54,13 @@ func (server *Server) getAccount(ctx *gin.Context) {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusNotFound, errorResponse(err))
 			return
+		} else {
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
 		}
-
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		return
 	}
 
 	ctx.JSON(http.StatusOK, account)
-
 }
 
 // listAccountsRequest is the request to list accounts
@@ -69,8 +68,6 @@ type listAccountRequest struct {
 	PageID   int32 `form:"page_id" binding:"required,min=1"`
 	PageSize int32 `form:"page_size" binding:"required,min=5,max=10"`
 }
-
-// your code here
 
 func (server *Server) listAccounts(ctx *gin.Context) {
 	var req listAccountRequest
