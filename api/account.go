@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	db "simplebank/db/sqlc"
@@ -50,7 +51,7 @@ func (server *Server) getAccount(ctx *gin.Context) {
 
 	account, err := server.store.GetAccount(ctx, req.ID)
 	if err != nil {
-		if err.Error() == "no rows in result set" {
+		if err == sql.ErrNoRows { // Check specifically for sql.ErrNoRows
 			log.Println("No account found for ID:", req.ID)
 			ctx.AbortWithStatusJSON(http.StatusNotFound, errorResponse(err))
 			return

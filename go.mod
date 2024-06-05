@@ -5,12 +5,14 @@ go 1.22.2
 require github.com/jackc/pgx/v5 v5.5.5
 
 require (
+	github.com/golang/mock v1.6.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.14.3 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.3 // indirect
 	github.com/jackc/pgtype v1.14.0 // indirect
 	github.com/jackc/puddle v1.3.0 // indirect
+	github.com/joho/godotenv v1.5.1 // indirect
 )
 
 require (
