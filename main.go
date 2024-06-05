@@ -3,19 +3,26 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 	"simplebank/api"
 	db "simplebank/db/sqlc"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-)
-
-const (
-	dbSource      = "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable"
-	serverAddress = "0.0.0.0:8080"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	// Get database source and server address from environment variables
+	dbSource := os.Getenv("DB_SOURCE")
+	serverAddress := os.Getenv("SERVER_ADDRESS")
+
 	// Connect to the database
 	pool, err := pgxpool.New(context.Background(), dbSource)
 	if err != nil {
