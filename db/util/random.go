@@ -31,12 +31,10 @@ func RandomOwner() string {
 	return RandomString(6)
 }
 
-// RandomMoney generates a random amount of money
 func RandomMoney() int64 {
 	return RandomInt(0, 1000)
 }
 
-// RandomCurrency generates a random currency code
 func RandomCurrency() string {
 	currencies := []string{"USD", "EUR", "CAD"}
 	n := len(currencies)
