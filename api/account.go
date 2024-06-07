@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	db "simplebank/db/sqlc"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,6 +31,17 @@ func (server *Server) createAccount(ctx *gin.Context) {
 
 	account, err := server.store.CreateAccount(ctx, arg)
 	if err != nil {
+		// show error type and message
+		log.Println(err)
+		log.Printf("Error type: %T\n", err)
+		if strings.Contains(err.Error(), "violates foreign key constraint") {
+			ctx.JSON(http.StatusForbidden, errorResponse(err))
+			return
+		}
+		if strings.Contains(err.Error(), "violates unique constraint") {
+			ctx.JSON(http.StatusBadRequest, errorResponse(err))
+			return
+		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
