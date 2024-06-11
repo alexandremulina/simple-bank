@@ -5,6 +5,7 @@ import (
 	db "simplebank/db/sqlc"
 	"simplebank/db/util"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -58,8 +59,8 @@ func (server *Server) createUser(ctx *gin.Context) {
 		Username:          user.Username,
 		FullName:          user.FullName,
 		Email:             user.Email,
-		PasswordChangedAt: user.PasswordChangedAt.Time.String(),
-		CreatedAt:         user.CreatedAt.Time.String(),
+		PasswordChangedAt: user.PasswordChangedAt.Time.Format(time.RFC3339),
+		CreatedAt:         user.CreatedAt.Time.Format(time.RFC3339),
 	}
 	ctx.JSON(http.StatusOK, rsp)
 }
