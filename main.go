@@ -3,28 +3,22 @@ package main
 import (
 	"context"
 	"log"
-	"os"
 	"simplebank/api"
 	db "simplebank/db/sqlc"
+	"simplebank/db/util"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	// Load environment variables from .env file
-	err := godotenv.Load()
+	config, err := util.LoadConfig(".")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("cannot load config:", err)
 	}
 
-	// Get database source and server address from environment variables
-	dbSource := os.Getenv("DB_SOURCE")
-	serverAddress := os.Getenv("SERVER_ADDRESS")
-
 	// Connect to the database
-	pool, err := pgxpool.New(context.Background(), dbSource)
+	pool, err := pgxpool.New(context.Background(), config.DBSource)
 	if err != nil {
 		log.Fatal("cannot connect to db pool: ", err)
 	}
@@ -41,10 +35,13 @@ func main() {
 	store := db.NewStore(pool)
 
 	// Create a new server
-	server := api.NewServer(store)
+	server, err := api.NewServer(config, store)
+	if err != nil {
+		log.Fatal("cannot create server: ", err)
+	}
 
 	// Start and run the server
-	err = server.Start(serverAddress)
+	err = server.Start(config.ServerAddress)
 	if err != nil {
 		log.Fatal("cannot start server: ", err)
 	}
