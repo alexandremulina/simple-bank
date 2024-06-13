@@ -12,7 +12,7 @@ func TestPasetoMaker(t *testing.T) {
 	maker, err := NewPasetoMaker(util.RandomString(32))
 	require.NoError(t, err)
 
-	username := "john_doe"
+	username := "user"
 	duration := time.Minute
 
 	token, err := maker.CreateToken(username, duration)
