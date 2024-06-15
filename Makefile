@@ -1,3 +1,13 @@
+DB_URL=postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable
+
+network:
+	docker network create bank-network
+
+
+postgres:
+	docker run --name postgres --network bank-network -p 5439:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:13-alpine
+
+
 migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5439/postgres?sslmode=disable" -verbose up
 
@@ -25,4 +35,4 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go simplebank/db/sqlc Store
 
-.PHONY: migrateup migratedown sqlc test server mock migrateup1 migratedown1
+.PHONY: migrateup migratedown sqlc test server mock migrateup1 migratedown1 postgres network
