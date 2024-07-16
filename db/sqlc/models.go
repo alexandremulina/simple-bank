@@ -24,6 +24,17 @@ type Entries struct {
 	CreatedAt pgtype.Timestamp `json:"created_at"`
 }
 
+type Sessions struct {
+	ID           pgtype.UUID      `json:"id"`
+	Username     string           `json:"username"`
+	RefreshToken string           `json:"refresh_token"`
+	UserAgent    string           `json:"user_agent"`
+	ClientIp     string           `json:"client_ip"`
+	IsBlocked    bool             `json:"is_blocked"`
+	ExpiresAt    pgtype.Timestamp `json:"expires_at"`
+	CreatedAt    pgtype.Timestamp `json:"created_at"`
+}
+
 type Transfers struct {
 	ID            int64 `json:"id"`
 	FromAccountID int64 `json:"from_account_id"`
