@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	db "simplebank/db/sqlc"
 	"simplebank/db/util"
@@ -111,7 +112,6 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-
 	refreshToken, refreshPayload, err := server.tokenMaker.CreateToken(
 		user.Username,
 		server.config.RefreshTokenDuration,
@@ -133,6 +133,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 			Valid: true,
 		},
 	})
+
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
