@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	db "simplebank/db/sqlc"
 	"simplebank/db/util"
